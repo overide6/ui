@@ -116,7 +116,7 @@ RUN --mount=type=secret,id=ui_deploy_key,required=true \
 
 Passing the secret depends on where the image is built:
 
-- **Compose** (`compose.yaml`):
+- **Compose** (`compose.yaml`). The key file must lie inside the project directory and be gitignored. Compose refuses to read build secrets from outside the project (for example `~/.ssh`) without an extra `--allow` grant.
 
   ```yaml
   services:
@@ -126,7 +126,7 @@ Passing the secret depends on where the image is built:
         secrets: [ui_deploy_key]
   secrets:
     ui_deploy_key:
-      environment: OVERIDE6_UI_DEPLOY_KEY   # or: file: ~/.ssh/overide6-ui-read
+      file: ./secrets/ui_deploy_key
   ```
 
 - **GitHub Actions, `npm ci` outside Docker** (lint, test and build jobs):
