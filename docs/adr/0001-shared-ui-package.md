@@ -139,7 +139,7 @@ Passing the secret depends on where the image is built:
   ```
 
 - **GitHub Actions, image builds:** `docker/build-push-action` with
-  `secrets: ui_deploy_key=${{ secrets.OVERIDE6_UI_DEPLOY_KEY }}`.
+  `secret-envs: ui_deploy_key=OVERIDE6_UI_DEPLOY_KEY`, and the secret passed in the step's `env`. The `secrets` input splits a multi-line value into several secrets, so it must not be used for a key.
 
 The secret is a build-time secret only. The running containers never need it, because the CSS is bundled into the frontend build.
 
