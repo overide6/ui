@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="de" data-app="abperformance">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>overide6 – Styleguide v1</title>
+<style>
+/* Mockup: shared look for all overide6 web apps, derived from ABPerformance
+ * (redesign-cool-light-v1, mobile-topbar-menu-v1). Cool neutral surfaces,
+ * hairlines instead of shadows, system font with tabular numbers, small
+ * uppercase kickers, dark slate top bar in both themes.
+ *
+ * The token block below is the draft of tokens.css: colours are "R G B"
+ * triplets so that plain CSS (rgb(var(--x))) and Tailwind
+ * (rgb(var(--x) / <alpha-value>)) can both use them. An app only sets
+ * --app-accent-light and --app-accent-dark; everything accent-related is
+ * derived from these two. */
+
+/* ------------------------------ tokens: light ------------------------------ */
+:root {
+  color-scheme: light;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-canvas: 243 245 248;
+  --color-surface: 255 255 255;
+  --color-surface-soft: 247 248 250;
+  --color-surface-strong: 238 241 245;
+  --color-line-soft: 226 230 236;
+  --color-line-strong: 203 210 220;
+  --color-ink: 21 26 34;
+  --color-muted: 94 104 120;
+  --color-subtle: 128 138 154;
+
+  --color-success: 26 128 70;
+  --color-warning: 150 92 8;
+  --color-danger: 196 50 32;
+
+  /* Data marks: one hue for single series, a second for targets/comparison. */
+  --color-chart: 42 120 214;
+  --color-chart-2: 199 122 15;
+  --color-chart-grid: 230 233 238;
+
+  /* Top bar stays dark slate in both themes. */
+  --color-bar: 22 27 34;
+  --color-bar-line: 37 44 56;
+  --color-bar-ink: 233 237 243;
+  --color-bar-dim: 137 148 165;
+
+  --color-accent: var(--app-accent-light);
+  --color-on-accent: 255 255 255;
+  --soft-mix: 10%;
+  --line-mix: 38%;
+
+  --radius-sm: 0.375rem;
+  --radius: 0.625rem;
+  --radius-lg: 0.875rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --control-height: 2.25rem;
+  --shadow-modal: 0 24px 60px rgb(21 26 34 / 0.16);
+}
+
+/* ------------------------------ tokens: dark ------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-canvas: 13 16 21;
+    --color-surface: 22 27 34;
+    --color-surface-soft: 27 33 41;
+    --color-surface-strong: 34 41 51;
+    --color-line-soft: 41 49 61;
+    --color-line-strong: 60 70 85;
+    --color-ink: 230 234 240;
+    --color-muted: 160 170 186;
+    --color-subtle: 122 133 150;
+    --color-success: 92 196 134;
+    --color-warning: 230 172 72;
+    --color-danger: 244 128 112;
+    --color-chart: 76 146 236;
+    --color-chart-2: 230 160 60;
+    --color-chart-grid: 38 45 56;
+    --color-bar: 9 12 16;
+    --color-bar-line: 30 36 46;
+    --color-accent: var(--app-accent-dark);
+    --color-on-accent: 9 12 16;
+    --soft-mix: 16%;
+    --line-mix: 45%;
+    --shadow-modal: 0 24px 60px rgb(0 0 0 / 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: 13 16 21;
+  --color-surface: 22 27 34;
+  --color-surface-soft: 27 33 41;
+  --color-surface-strong: 34 41 51;
+  --color-line-soft: 41 49 61;
+  --color-line-strong: 60 70 85;
+  --color-ink: 230 234 240;
+  --color-muted: 160 170 186;
+  --color-subtle: 122 133 150;
+  --color-success: 92 196 134;
+  --color-warning: 230 172 72;
+  --color-danger: 244 128 112;
+  --color-chart: 76 146 236;
+  --color-chart-2: 230 160 60;
+  --color-chart-grid: 38 45 56;
+  --color-bar: 9 12 16;
+  --color-bar-line: 30 36 46;
+  --color-accent: var(--app-accent-dark);
+  --color-on-accent: 9 12 16;
+  --soft-mix: 16%;
+  --line-mix: 45%;
+  --shadow-modal: 0 24px 60px rgb(0 0 0 / 0.5);
+}
+
+/* Derived colours: soft fills and lines for every status colour. */
+:root {
+  --accent: rgb(var(--color-accent));
+  --accent-soft: color-mix(in srgb, var(--accent) var(--soft-mix), rgb(var(--color-surface)));
+  --accent-line: color-mix(in srgb, var(--accent) var(--line-mix), rgb(var(--color-surface)));
+  --success-soft: color-mix(in srgb, rgb(var(--color-success)) var(--soft-mix), rgb(var(--color-surface)));
+  --success-line: color-mix(in srgb, rgb(var(--color-success)) var(--line-mix), rgb(var(--color-surface)));
+  --warning-soft: color-mix(in srgb, rgb(var(--color-warning)) var(--soft-mix), rgb(var(--color-surface)));
+  --warning-line: color-mix(in srgb, rgb(var(--color-warning)) var(--line-mix), rgb(var(--color-surface)));
+  --danger-soft: color-mix(in srgb, rgb(var(--color-danger)) var(--soft-mix), rgb(var(--color-surface)));
+  --danger-line: color-mix(in srgb, rgb(var(--color-danger)) var(--line-mix), rgb(var(--color-surface)));
+  /* On the dark bar the accent always uses its dark-theme variant. */
+  --bar-accent: rgb(var(--app-accent-dark));
+  --bar-accent-soft: rgb(var(--app-accent-dark) / 0.16);
+}
+
+/* -------------------------- per-app accent (app.css) ------------------------ */
+[data-app="abperformance"] { --app-accent-light: 47 111 224;  --app-accent-dark: 120 168 255; }
+[data-app="kassenbons"]    { --app-accent-light: 13 118 108;  --app-accent-dark: 82 200 182; }
+[data-app="neu"]           { --app-accent-light: 108 76 212;  --app-accent-dark: 168 146 245; }
+
+/* ---------------------------------- base ----------------------------------- */
+* { box-sizing: border-box; }
+html { background: rgb(var(--color-canvas)); }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: rgb(var(--color-ink));
+  background: rgb(var(--color-canvas));
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
+h2 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+h3 { font-size: 1rem; font-weight: 650; letter-spacing: -0.01em; }
+a { color: var(--accent); }
+code { font-family: var(--font-mono); font-size: 0.82rem; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* -------------------------------- top bar ---------------------------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgb(var(--color-bar));
+  border-bottom: 1px solid rgb(var(--color-bar-line));
+  color: rgb(var(--color-bar-ink));
+}
+.topbar-in {
+  max-width: 72rem; margin: 0 auto; padding: 0 var(--space-5);
+  height: 3.5rem; display: flex; align-items: center; gap: 1.75rem;
+}
+.brand { display: flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; }
+.brand-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--bar-accent); flex: none; }
+.nav { display: flex; gap: var(--space-1); }
+.nav a {
+  color: rgb(var(--color-bar-dim)); text-decoration: none; font-weight: 600; font-size: 0.875rem;
+  padding: 0.45rem 0.75rem; border-radius: 0.5rem;
+}
+.nav a:hover { color: rgb(var(--color-bar-ink)); }
+.nav a[aria-current="page"] { background: var(--bar-accent-soft); color: var(--bar-accent); }
+.bar-meta { margin-left: auto; font-size: 0.78rem; color: rgb(var(--color-bar-dim)); white-space: nowrap; }
+.menu-btn, .menu-panel { display: none; }
+
+@media (max-width: 1023px) {
+  .topbar-in { padding: 0 var(--space-2); gap: var(--space-2); }
+  .brand, .nav { display: none; }
+  .menu-btn {
+    display: flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 0.6rem;
+    border: 0; border-radius: var(--radius); background: none; cursor: pointer;
+    color: rgb(var(--color-bar-ink)); font-weight: 700; font-size: 1rem; letter-spacing: -0.02em;
+  }
+  .menu-btn .chev { color: rgb(var(--color-bar-dim)); font-size: 0.75rem; transition: transform 0.15s; }
+  .menu-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .bar-meta { padding-right: 0.6rem; }
+  .menu-panel[data-open="true"] {
+    display: grid; gap: 2px; padding: 0.375rem;
+    position: absolute; top: 3.5rem; left: 0; right: 0;
+    background: rgb(var(--color-bar)); border-bottom: 1px solid rgb(var(--color-bar-line));
+  }
+  .menu-panel a {
+    display: flex; align-items: center; min-height: 2.75rem; padding: 0 0.75rem; border-radius: var(--radius);
+    color: rgb(var(--color-bar-dim)); font-weight: 600; text-decoration: none;
+  }
+  .menu-panel a[aria-current="page"] { background: var(--bar-accent-soft); color: var(--bar-accent); }
+}
+
+/* ------------------------------ page layout -------------------------------- */
+.page { max-width: 72rem; margin: 0 auto; padding: var(--space-5) var(--space-5) 4rem; display: grid; gap: var(--space-4); }
+.grid-2 { display: grid; gap: var(--space-4); }
+@media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .page { padding: var(--space-4) var(--space-4) 3rem; } }
+
+/* --------------------------------- panels ---------------------------------- */
+.panel {
+  background: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-line-soft));
+  border-radius: var(--radius-lg);
+  padding: 1.125rem 1.25rem;
+  min-width: 0;
+}
+.panel-soft { background: rgb(var(--color-surface-soft)); border: 1px solid rgb(var(--color-line-soft)); border-radius: var(--radius); padding: var(--space-3) var(--space-4); }
+@media (max-width: 600px) { .panel { padding: var(--space-4); } }
+.kicker {
+  font-size: 0.69rem; line-height: 1rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: rgb(var(--color-subtle));
+}
+.sub { font-size: 0.85rem; color: rgb(var(--color-muted)); }
+.head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); flex-wrap: wrap; }
+.stack { display: grid; gap: var(--space-3); }
+.section-title { display: grid; gap: 0.2rem; margin-bottom: var(--space-4); }
+.row { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+
+/* --------------------------------- buttons --------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  min-height: var(--control-height); padding: 0 0.85rem;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  color: rgb(var(--color-ink)); background: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-line-strong)); border-radius: 0.5625rem;
+}
+.btn:hover { background: rgb(var(--color-surface-soft)); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: rgb(var(--color-on-accent)); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 88%, rgb(var(--color-ink))); }
+.btn-ghost { border-color: transparent; background: none; color: rgb(var(--color-muted)); }
+.btn-danger { color: rgb(var(--color-danger)); border-color: var(--danger-line); }
+.btn-danger:hover { background: var(--danger-soft); }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+@media (pointer: coarse) { :root { --control-height: 2.75rem; } }
+
+.seg { display: inline-flex; border: 1px solid rgb(var(--color-line-strong)); border-radius: 0.5625rem; overflow: hidden; max-width: 100%; }
+.seg button {
+  border: 0; background: rgb(var(--color-surface)); color: rgb(var(--color-muted));
+  font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.7rem; cursor: pointer; min-height: 2rem;
+  flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere;
+}
+.seg button + button { border-left: 1px solid rgb(var(--color-line-soft)); }
+.seg button[aria-checked="true"] { background: var(--accent-soft); color: var(--accent); }
+
+/* ---------------------------------- tags ----------------------------------- */
+.tag {
+  display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 0.12rem 0.4rem; border-radius: 0.25rem;
+  background: rgb(var(--color-surface-strong)); color: rgb(var(--color-muted));
+}
+.tag-accent { background: var(--accent-soft); color: var(--accent); }
+.tag-ok { background: var(--success-soft); color: rgb(var(--color-success)); }
+.tag-warn { background: var(--warning-soft); color: rgb(var(--color-warning)); }
+.tag-bad { background: var(--danger-soft); color: rgb(var(--color-danger)); }
+
+/* --------------------------------- callouts -------------------------------- */
+.callout { padding: 0.6rem 0.8rem; border-radius: var(--radius); font-size: 0.85rem; border: 1px solid; }
+.callout b { font-weight: 650; }
+.callout-info { background: var(--accent-soft); border-color: var(--accent-line); }
+.callout-ok { background: var(--success-soft); border-color: var(--success-line); }
+.callout-warn { background: var(--warning-soft); border-color: var(--warning-line); }
+.callout-bad { background: var(--danger-soft); border-color: var(--danger-line); }
+
+/* ---------------------------------- forms ---------------------------------- */
+.form { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.field { display: grid; gap: 0.3rem; font-size: 0.8rem; font-weight: 600; color: rgb(var(--color-muted)); min-width: 0; }
+.input {
+  width: 100%; min-width: 0; min-height: var(--control-height); padding: 0 0.7rem;
+  border: 1px solid rgb(var(--color-line-strong)); border-radius: 0.5625rem;
+  background: rgb(var(--color-surface)); color: rgb(var(--color-ink)); font-weight: 400; font-size: 0.94rem;
+}
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input.invalid { border-color: rgb(var(--color-danger)); }
+.hint { font-weight: 400; font-size: 0.76rem; color: rgb(var(--color-subtle)); }
+.hint-bad { color: rgb(var(--color-danger)); }
+.check { display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; color: rgb(var(--color-ink)); font-weight: 400; min-height: var(--control-height); }
+.check input { accent-color: var(--accent); width: 1rem; height: 1rem; }
+
+/* ------------------------------ KPI strip ----------------------------------- */
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid rgb(var(--color-line-soft)); margin-top: var(--space-4); }
+@media (min-width: 900px) { .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.kpi { padding: 0.85rem 1rem 0.25rem 0; min-width: 0; }
+.kpi + .kpi { padding-left: 1rem; border-left: 1px solid rgb(var(--color-line-soft)); }
+@media (max-width: 899px) {
+  .kpi:nth-child(3) { border-left: 0; padding-left: 0; }
+  .kpi:nth-child(n + 3) { border-top: 1px solid rgb(var(--color-line-soft)); }
+}
+.kpi .v { margin-top: 0.35rem; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.kpi .v small { font-size: 0.8rem; font-weight: 500; color: rgb(var(--color-muted)); margin-left: 0.15rem; }
+.kpi .s { margin-top: 0.25rem; font-size: 0.78rem; color: rgb(var(--color-muted)); }
+.up { color: rgb(var(--color-success)); }
+.down { color: rgb(var(--color-danger)); }
+
+/* --------------------------------- table ----------------------------------- */
+.table-wrap { margin: var(--space-3) -1.25rem 0; overflow-x: auto; }
+@media (max-width: 600px) { .table-wrap { margin-inline: calc(-1 * var(--space-4)); } }
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+th {
+  text-align: left; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
+  color: rgb(var(--color-subtle)); padding: 0.25rem 0.6rem 0.4rem;
+}
+td { padding: 0.55rem 0.6rem; border-top: 1px solid rgb(var(--color-surface-strong)); vertical-align: baseline; }
+th:first-child, td:first-child { padding-left: 1.25rem; border-left: 3px solid transparent; }
+th:last-child, td:last-child { padding-right: 1.25rem; }
+.num { text-align: right; white-space: nowrap; }
+tr.current { background: linear-gradient(90deg, var(--accent-soft), transparent 70%); }
+tr.current td:first-child { border-left-color: var(--accent); color: var(--accent); font-weight: 650; }
+tr.muted td { color: rgb(var(--color-subtle)); }
+tbody tr:hover td { background-color: rgb(var(--color-surface-soft)); }
+@media (max-width: 600px) {
+  th:first-child, td:first-child { padding-left: var(--space-4); }
+  th:last-child, td:last-child { padding-right: var(--space-4); }
+  .hide-sm { display: none; }
+}
+
+/* --------------------------------- chart ----------------------------------- */
+.bars { display: grid; gap: 0.45rem; margin-top: var(--space-4); }
+.bar-row { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) 4.75rem; gap: var(--space-3); align-items: center; font-size: 0.82rem; }
+.bar-row .lbl { color: rgb(var(--color-muted)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track {
+  position: relative; height: 0.75rem; border-radius: 0.2rem;
+  background-image: repeating-linear-gradient(90deg, rgb(var(--color-chart-grid)) 0 1px, transparent 1px 25%);
+}
+.bar-fill { position: absolute; inset: 0 auto 0 0; border-radius: 0.2rem; background: rgb(var(--color-chart)); }
+.bar-row:hover .bar-fill { background: color-mix(in srgb, rgb(var(--color-chart)) 80%, rgb(var(--color-ink))); }
+.bar-target { position: absolute; top: -0.2rem; bottom: -0.2rem; width: 2px; background: rgb(var(--color-chart-2)); border-radius: 1px; }
+.legend { margin-top: var(--space-3); display: flex; gap: 0.4rem 1rem; flex-wrap: wrap; font-size: 0.78rem; color: rgb(var(--color-muted)); }
+.legend i { display: inline-block; width: 0.75rem; height: 0.5rem; border-radius: 2px; margin-right: 0.4rem; vertical-align: 0.05rem; }
+@media (max-width: 420px) { .bar-row { grid-template-columns: 4.5rem minmax(0, 1fr) 4.25rem; gap: var(--space-2); } }
+
+/* ------------------------------ list + empty ------------------------------- */
+.list { margin: var(--space-2) -1.25rem 0; }
+.item {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); align-items: baseline;
+  padding: 0.6rem 1.25rem 0.6rem calc(1.25rem - 3px); border-left: 3px solid transparent;
+}
+.item + .item { border-top: 1px solid rgb(var(--color-surface-strong)); }
+.item .t { font-weight: 600; overflow-wrap: anywhere; }
+.item .m { font-size: 0.78rem; color: rgb(var(--color-muted)); margin-top: 0.1rem; }
+.item.now { border-left-color: var(--accent); background: linear-gradient(90deg, var(--accent-soft), transparent 72%); }
+@media (max-width: 600px) { .list { margin-inline: calc(-1 * var(--space-4)); } .item { padding-inline: var(--space-4); padding-left: calc(var(--space-4) - 3px); } }
+.empty { text-align: center; padding: var(--space-6) var(--space-4); border: 1px dashed rgb(var(--color-line-strong)); border-radius: var(--radius); color: rgb(var(--color-muted)); font-size: 0.88rem; }
+.empty b { display: block; color: rgb(var(--color-ink)); margin-bottom: 0.2rem; }
+
+/* ---------------------------------- modal ---------------------------------- */
+.modal-stage { position: relative; border-radius: var(--radius); background: rgb(var(--color-ink) / 0.35); padding: var(--space-6) var(--space-4); display: grid; place-items: center; }
+.modal {
+  width: min(100%, 26rem); background: rgb(var(--color-surface)); border: 1px solid rgb(var(--color-line-soft));
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); padding: var(--space-5); display: grid; gap: var(--space-3);
+}
+.modal .actions { display: flex; justify-content: flex-end; gap: var(--space-2); flex-wrap: wrap; }
+
+/* -------------------------------- swatches --------------------------------- */
+.swatches { display: grid; gap: var(--space-2); grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); }
+.swatch { border: 1px solid rgb(var(--color-line-soft)); border-radius: var(--radius); overflow: hidden; background: rgb(var(--color-surface)); min-width: 0; }
+.swatch .chip { height: 2.75rem; border-bottom: 1px solid rgb(var(--color-line-soft)); }
+.swatch .meta { padding: 0.4rem 0.55rem; font-size: 0.72rem; line-height: 1.3; }
+.swatch .meta b { display: block; font-weight: 600; font-size: 0.76rem; overflow-wrap: anywhere; }
+.swatch .meta span { color: rgb(var(--color-subtle)); font-family: var(--font-mono); }
+.group-label { margin: var(--space-4) 0 var(--space-2); }
+.group-label:first-of-type { margin-top: 0; }
+
+.type-scale { display: grid; gap: var(--space-3); }
+.type-scale > div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+@media (max-width: 480px) { .type-scale > div { grid-template-columns: 1fr; gap: 0.1rem; } }
+
+pre {
+  margin: var(--space-3) 0 0; padding: var(--space-3) var(--space-4); overflow-x: auto;
+  background: rgb(var(--color-surface-soft)); border: 1px solid rgb(var(--color-line-soft)); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.55;
+}
+ul.rules { margin: var(--space-2) 0 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: 0.88rem; }
+ul.rules li::marker { color: var(--accent); }
+
+/* ----------------------------- mockup controls ----------------------------- */
+.mock {
+  border: 1px dashed rgb(var(--color-line-strong)); border-radius: var(--radius-lg);
+  background: rgb(var(--color-surface-soft)); padding: var(--space-3) var(--space-4);
+  display: grid; gap: var(--space-3); font-size: 0.85rem; color: rgb(var(--color-muted));
+}
+.mock b { color: rgb(var(--color-ink)); }
+.mock .row { gap: var(--space-2) var(--space-4); }
+.mock .ctl { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><span class="brand-dot"></span><span data-app-name>ABPerformance</span></span>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="#" aria-current="page">Übersicht</a>
+      <a href="#">Liste</a>
+      <a href="#">Statistik</a>
+      <a href="#">Einstellungen</a>
+    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu-panel">
+      <span class="brand-dot"></span>Übersicht<span class="chev" aria-hidden="true">▾</span>
+    </button>
+    <span class="bar-meta">Sync 28.10. 07:12</span>
+  </div>
+  <nav class="menu-panel" id="menu-panel" data-open="false" aria-label="Hauptnavigation">
+    <a href="#" aria-current="page">Übersicht</a>
+    <a href="#">Liste</a>
+    <a href="#">Statistik</a>
+    <a href="#">Einstellungen</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <div class="mock">
+    <div><b>Styleguide v1</b> – gemeinsamer Look aller overide6-Web-Apps, abgeleitet aus ABPerformance (statisch, Beispieldaten). Unter 1024 px wird die Navigation zum Menü in der Kopfleiste.</div>
+    <div class="row">
+      <div class="ctl">App
+        <span class="seg" role="radiogroup" aria-label="App-Akzent">
+          <button type="button" role="radio" aria-checked="true" data-app="abperformance">ABPerformance</button>
+          <button type="button" role="radio" aria-checked="false" data-app="kassenbons">Kassenbons</button>
+          <button type="button" role="radio" aria-checked="false" data-app="neu">Neue App</button>
+        </span>
+      </div>
+      <div class="ctl">Modus
+        <span class="seg" role="radiogroup" aria-label="Farbmodus">
+          <button type="button" role="radio" aria-checked="true" data-theme-choice="auto">System</button>
+          <button type="button" role="radio" aria-checked="false" data-theme-choice="light">Hell</button>
+          <button type="button" role="radio" aria-checked="false" data-theme-choice="dark">Dunkel</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page header + KPI strip -->
+  <section class="panel">
+    <div class="head">
+      <div>
+        <div class="kicker">Oktober 2026</div>
+        <h1 style="margin-top:0.3rem">Seitenkopf</h1>
+        <p class="sub" style="margin-top:0.35rem">Kicker, Titel, eine Zeile Kontext. Aktionen rechts, auf dem Handy darunter.</p>
+      </div>
+      <div class="row">
+        <button class="btn" type="button">Exportieren</button>
+        <button class="btn btn-primary" type="button">Neu anlegen</button>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kicker">Ausgaben</div><div class="v">412,80<small>€</small></div><div class="s"><span class="down">▲ 8 %</span> zum Vormonat</div></div>
+      <div class="kpi"><div class="kicker">Belege</div><div class="v">23</div><div class="s">3 ungeprüft</div></div>
+      <div class="kpi"><div class="kicker">Umfang</div><div class="v">38,5<small>h</small></div><div class="s"><span class="up">▲ 4 %</span> über Soll</div></div>
+      <div class="kpi"><div class="kicker">Status</div><div class="v" style="font-size:1rem;line-height:1.35">Im Plan</div><div class="s"><span class="tag tag-ok">ok</span></div></div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="panel">
+    <div class="section-title"><div class="kicker">Grundsätze</div><h2>Was alle Apps gemeinsam haben</h2></div>
+    <ul class="rules">
+      <li>Kühle, neutrale Flächen; Haarlinien statt Schatten und verschachtelter Kacheln. Schatten nur für Dialoge.</li>
+      <li>Systemschrift, Zahlen immer mit fester Breite (<code>tabular-nums</code>), Beträge und Werte rechtsbündig.</li>
+      <li>Kleine Großbuchstaben-Kicker über Titeln, Kennzahlen und Tabellenköpfen.</li>
+      <li>Farbe sparsam: der App-Akzent für Aktion und „jetzt“, Status-Farben nur für Status, eine Datenfarbe für Diagramme.</li>
+      <li>„Jetzt“ (heute, aktuelle Woche, aktueller Monat) immer mit Akzentbalken links und weichem Verlauf.</li>
+      <li>Dunkle Kopfleiste in beiden Modi; Hell/Dunkel folgt dem System.</li>
+      <li>Handy zuerst: nie seitlich scrollen (342 px, große Systemschrift), Touch-Ziele mindestens 44 px.</li>
+    </ul>
+  </section>
+
+  <!-- Colours -->
+  <section class="panel">
+    <div class="section-title"><div class="kicker">Farben</div><h2>Tokens</h2><p class="sub">Werte werden live aus dem aktuellen Modus gelesen. Nur der Akzent ist pro App verschieden.</p></div>
+    <div class="kicker group-label">Akzent (pro App)</div>
+    <div class="swatches" data-swatches="accent"></div>
+    <div class="kicker group-label">Flächen und Linien</div>
+    <div class="swatches" data-swatches="surface"></div>
+    <div class="kicker group-label">Text</div>
+    <div class="swatches" data-swatches="text"></div>
+    <div class="kicker group-label">Status</div>
+    <div class="swatches" data-swatches="status"></div>
+    <div class="kicker group-label">Daten und Kopfleiste</div>
+    <div class="swatches" data-swatches="data"></div>
+  </section>
+
+  <div class="grid-2">
+    <!-- Typography -->
+    <section class="panel">
+      <div class="section-title"><div class="kicker">Typografie</div><h2>Schriftgrößen</h2></div>
+      <div class="type-scale">
+        <div><span class="kicker">Titel</span><h1>Saison 2026</h1></div>
+        <div><span class="kicker">Abschnitt</span><h2>Diese Woche</h2></div>
+        <div><span class="kicker">Untertitel</span><h3>Einkauf SPAR</h3></div>
+        <div><span class="kicker">Text</span><span>Fließtext 15 px, Zeilenhöhe 1,45.</span></div>
+        <div><span class="kicker">Klein</span><span class="sub">Nebeninformation und Kontext</span></div>
+        <div><span class="kicker">Kicker</span><span class="kicker">Kennzahl</span></div>
+        <div><span class="kicker">Zahl</span><span style="font-size:1.45rem;font-weight:700;letter-spacing:-0.02em">1.234,56 €</span></div>
+      </div>
+    </section>
+
+    <!-- Buttons, tags, callouts -->
+    <section class="panel">
+      <div class="section-title"><div class="kicker">Bedienelemente</div><h2>Buttons und Status</h2></div>
+      <div class="stack">
+        <div class="row">
+          <button class="btn btn-primary" type="button">Speichern</button>
+          <button class="btn" type="button">Abbrechen</button>
+          <button class="btn btn-ghost" type="button">Mehr</button>
+          <button class="btn btn-danger" type="button">Löschen</button>
+          <button class="btn" type="button" disabled>Gesperrt</button>
+        </div>
+        <span class="seg" role="radiogroup" aria-label="Zeitraum">
+          <button type="button" role="radio" aria-checked="false">Woche</button>
+          <button type="button" role="radio" aria-checked="true">Monat</button>
+          <button type="button" role="radio" aria-checked="false">Jahr</button>
+        </span>
+        <div class="row">
+          <span class="tag">Neutral</span>
+          <span class="tag tag-accent">Neu</span>
+          <span class="tag tag-ok">Geprüft</span>
+          <span class="tag tag-warn">Offen</span>
+          <span class="tag tag-bad">Fehler</span>
+        </div>
+        <div class="callout callout-info"><b>Hinweis:</b> 3 Belege warten auf Prüfung.</div>
+        <div class="callout callout-ok"><b>Gespeichert.</b> Die Buchung ist angelegt.</div>
+        <div class="callout callout-warn"><b>Summe weicht ab:</b> 0,40 € Differenz zum Belegbetrag.</div>
+        <div class="callout callout-bad"><b>Fehler:</b> Die Datei konnte nicht gelesen werden.</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Forms -->
+  <section class="panel">
+    <div class="section-title"><div class="kicker">Formulare</div><h2>Eingaben</h2><p class="sub">Beschriftung oben, Hinweis darunter. Felder brechen auf dem Handy einspaltig um.</p></div>
+    <form class="form" onsubmit="return false">
+      <label class="field">Datum<input class="input" type="date" value="2026-10-28"></label>
+      <label class="field">Geschäft<select class="input"><option>SPAR</option><option>HOFER</option><option>BILLA</option></select></label>
+      <label class="field">Betrag<input class="input invalid" inputmode="decimal" value="12,4x"><span class="hint hint-bad">Bitte einen Betrag wie 12,40 eingeben.</span></label>
+      <label class="field">Notiz<input class="input" placeholder="optional"><span class="hint">Erscheint in der Liste.</span></label>
+      <label class="check"><input type="checkbox" checked> Als geprüft markieren</label>
+    </form>
+  </section>
+
+  <div class="grid-2">
+    <!-- Table -->
+    <section class="panel">
+      <div class="head"><div><div class="kicker">Tabelle</div><h2>Monate</h2></div><span class="tag tag-accent">aktuell: Okt.</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Monat</th><th class="hide-sm">Belege</th><th class="num">Soll</th><th class="num">Ist</th></tr></thead>
+          <tbody>
+            <tr><td>Juli</td><td class="hide-sm">21</td><td class="num">450,00</td><td class="num">431,20</td></tr>
+            <tr><td>August</td><td class="hide-sm">26</td><td class="num">450,00</td><td class="num">498,75</td></tr>
+            <tr><td>September</td><td class="hide-sm">19</td><td class="num">450,00</td><td class="num">402,10</td></tr>
+            <tr class="current"><td>Oktober</td><td class="hide-sm">23</td><td class="num">450,00</td><td class="num"><b>412,80</b></td></tr>
+            <tr class="muted"><td>November</td><td class="hide-sm">–</td><td class="num">450,00</td><td class="num">–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chart -->
+    <section class="panel">
+      <div class="kicker">Diagramm</div><h2>Ausgaben nach Kategorie</h2>
+      <div class="bars" role="list">
+        <div class="bar-row" role="listitem"><span class="lbl">Lebensmittel</span><span class="bar-track"><span class="bar-fill" style="width:82%"></span><span class="bar-target" style="left:75%"></span></span><span class="num">246,30 €</span></div>
+        <div class="bar-row" role="listitem"><span class="lbl">Getränke</span><span class="bar-track"><span class="bar-fill" style="width:31%"></span><span class="bar-target" style="left:40%"></span></span><span class="num">62,10 €</span></div>
+        <div class="bar-row" role="listitem"><span class="lbl">Drogerie</span><span class="bar-track"><span class="bar-fill" style="width:24%"></span><span class="bar-target" style="left:20%"></span></span><span class="num">48,90 €</span></div>
+        <div class="bar-row" role="listitem"><span class="lbl">Haushalt</span><span class="bar-track"><span class="bar-fill" style="width:18%"></span><span class="bar-target" style="left:25%"></span></span><span class="num">36,40 €</span></div>
+        <div class="bar-row" role="listitem"><span class="lbl">Sonstiges</span><span class="bar-track"><span class="bar-fill" style="width:9%"></span><span class="bar-target" style="left:10%"></span></span><span class="num">19,10 €</span></div>
+      </div>
+      <div class="legend"><span><i style="background:rgb(var(--color-chart))"></i>Ist</span><span><i style="background:rgb(var(--color-chart-2));width:2px;height:0.75rem"></i>Budget</span></div>
+      <p class="sub" style="margin-top:0.6rem">Handgeschriebenes HTML/CSS, keine Diagramm-Bibliothek. Datenfarben sind bewusst unabhängig vom App-Akzent.</p>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <!-- List + empty -->
+    <section class="panel">
+      <div class="kicker">Liste</div><h2>Diese Woche</h2>
+      <div class="list">
+        <div class="item"><div><div class="t">Mo · Lockerer Lauf</div><div class="m">45 min · Zone 2</div></div><span class="tag tag-ok">erledigt</span></div>
+        <div class="item now"><div><div class="t">Di · Einkauf HOFER</div><div class="m">heute · 14 Positionen</div></div><span class="num">38,20 €</span></div>
+        <div class="item"><div><div class="t">Mi · Krafttraining</div><div class="m">60 min</div></div><span class="tag">geplant</span></div>
+      </div>
+      <div class="empty" style="margin-top:var(--space-4)"><b>Noch keine Einträge</b>Lade einen Beleg hoch oder lege eine Ausgabe an.</div>
+    </section>
+
+    <!-- Modal -->
+    <section class="panel">
+      <div class="kicker">Dialog</div><h2>Bestätigung</h2>
+      <div class="modal-stage" style="margin-top:var(--space-3)">
+        <div class="modal" role="dialog" aria-modal="false" aria-labelledby="modal-title">
+          <div class="kicker">Beleg</div>
+          <h3 id="modal-title">Beleg löschen?</h3>
+          <p class="sub">Der Beleg vom 24.10. (SPAR, 38,20 €) wird endgültig entfernt.</p>
+          <div class="actions"><button class="btn" type="button">Abbrechen</button><button class="btn btn-danger" type="button">Löschen</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Adoption -->
+  <section class="panel">
+    <div class="section-title"><div class="kicker">Einbinden</div><h2>So nutzt eine App den Styleguide</h2><p class="sub">Geplant: Paket <code>@overide6/ui</code> mit <code>tokens.css</code> und <code>base.css</code>, optional ein Tailwind-Preset.</p></div>
+<pre>/* app.css */
+@import "@overide6/ui/tokens.css";
+@import "@overide6/ui/base.css";
+
+:root {
+  --app-accent-light: 13 118 108;  /* Kassenbons: Petrol */
+  --app-accent-dark: 82 200 182;
+}</pre>
+<pre>/* tailwind.config.js (nur Apps mit Tailwind) */
+presets: [require("@overide6/ui/tailwind-preset")]
+/* → bg-surface, border-line, text-muted, text-accent, bg-accent/10 … */</pre>
+  </section>
+
+</main>
+
+<script>
+  const root = document.documentElement;
+  const appNames = { abperformance: "ABPerformance", kassenbons: "Kassenbons", neu: "Neue App" };
+
+  const swatchGroups = {
+    accent: [["--color-accent", "Akzent"], ["--accent-soft", "Akzent weich", true], ["--accent-line", "Akzent Linie", true], ["--color-on-accent", "Text auf Akzent"]],
+    surface: [["--color-canvas", "Hintergrund"], ["--color-surface", "Fläche"], ["--color-surface-soft", "Fläche weich"], ["--color-surface-strong", "Fläche kräftig"], ["--color-line-soft", "Linie"], ["--color-line-strong", "Linie kräftig"]],
+    text: [["--color-ink", "Text"], ["--color-muted", "Text gedämpft"], ["--color-subtle", "Text leise"]],
+    status: [["--color-success", "Erfolg"], ["--success-soft", "Erfolg weich", true], ["--color-warning", "Warnung"], ["--warning-soft", "Warnung weich", true], ["--color-danger", "Fehler"], ["--danger-soft", "Fehler weich", true]],
+    data: [["--color-chart", "Daten"], ["--color-chart-2", "Daten Vergleich"], ["--color-chart-grid", "Raster"], ["--color-bar", "Kopfleiste"], ["--color-bar-ink", "Kopfleiste Text"], ["--bar-accent", "Kopfleiste aktiv", true]],
+  };
+
+  function toHex(color) {
+    const m = color.match(/\d+(\.\d+)?/g);
+    if (!m) return color;
+    return "#" + m.slice(0, 3).map((n) => Math.round(+n).toString(16).padStart(2, "0")).join("").toUpperCase();
+  }
+
+  function renderSwatches() {
+    for (const [group, tokens] of Object.entries(swatchGroups)) {
+      const host = document.querySelector(`[data-swatches="${group}"]`);
+      host.innerHTML = "";
+      for (const [token, label, isFull] of tokens) {
+        const el = document.createElement("div");
+        el.className = "swatch";
+        const value = isFull ? `var(${token})` : `rgb(var(${token}))`;
+        el.innerHTML = `<div class="chip" style="background:${value}"></div><div class="meta"><b>${label}</b><span>${token}</span><br><span data-hex></span></div>`;
+        host.append(el);
+      }
+    }
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".swatch").forEach((el) => {
+        el.querySelector("[data-hex]").textContent = toHex(getComputedStyle(el.querySelector(".chip")).backgroundColor);
+      });
+    });
+  }
+
+  function select(group, button) {
+    group.querySelectorAll("button").forEach((b) => b.setAttribute("aria-checked", String(b === button)));
+  }
+
+  document.querySelectorAll("[data-app]").forEach((button) => {
+    if (button === root) return;
+    button.addEventListener("click", () => {
+      root.dataset.app = button.dataset.app;
+      document.querySelector("[data-app-name]").textContent = appNames[button.dataset.app];
+      select(button.parentElement, button);
+      renderSwatches();
+    });
+  });
+
+  document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const choice = button.dataset.themeChoice;
+      if (choice === "auto") delete root.dataset.theme;
+      else root.dataset.theme = choice;
+      select(button.parentElement, button);
+      renderSwatches();
+    });
+  });
+
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderSwatches);
+
+  document.querySelectorAll(".page .seg:not([aria-label='App-Akzent']):not([aria-label='Farbmodus']) button").forEach((button) => {
+    button.addEventListener("click", () => select(button.parentElement, button));
+  });
+
+  const menuButton = document.querySelector(".menu-btn");
+  const menuPanel = document.getElementById("menu-panel");
+  menuButton.addEventListener("click", () => {
+    const open = menuButton.getAttribute("aria-expanded") !== "true";
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuPanel.dataset.open = String(open);
+  });
+
+  renderSwatches();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "@overide6/ui",
+  "version": "0.1.0",
+  "description": "Shared look of the overide6 web apps: design tokens, base styles and a Tailwind preset.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "private": true,
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./base.css": "./base.css",
+    "./tailwind-preset": "./tailwind-preset.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "tokens.css",
+    "base.css",
+    "tailwind-preset.js"
+  ],
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "test": "node scripts/check.mjs",
+    "styleguide": "python3 -m http.server 4178"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  }
+}

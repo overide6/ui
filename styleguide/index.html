@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="de" data-app="abperformance">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>overide6 – Styleguide</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<style>
+/* Styleguide page only. Everything a real app uses comes from tokens.css and
+ * base.css; this block only adds the demo accents and the page's own helpers. */
+
+/* Demo accents: in an app this is two lines in its own stylesheet. */
+[data-app="abperformance"] { --app-accent-light: 47 111 224;  --app-accent-dark: 120 168 255; }
+[data-app="kassenbons"]    { --app-accent-light: 13 118 108;  --app-accent-dark: 82 200 182; }
+[data-app="neu"]           { --app-accent-light: 108 76 212;  --app-accent-dark: 168 146 245; }
+
+.sg-title { display: grid; gap: 0.2rem; margin-bottom: var(--space-4); }
+.sg-controls {
+  display: grid; gap: var(--space-3); padding: var(--space-3) var(--space-4);
+  border: 1px dashed rgb(var(--color-line-strong)); border-radius: var(--radius-lg);
+  background: rgb(var(--color-surface-soft)); font-size: 0.85rem; color: rgb(var(--color-muted));
+}
+.sg-controls b { color: rgb(var(--color-ink)); }
+.sg-control { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+.sg-rules { margin: var(--space-2) 0 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: 0.88rem; }
+.sg-rules li::marker { color: var(--accent); }
+.sg-group { margin: var(--space-4) 0 var(--space-2); }
+.sg-group:first-of-type { margin-top: 0; }
+.sg-swatches { display: grid; gap: var(--space-2); grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); }
+.sg-swatch { min-width: 0; overflow: hidden; border: 1px solid rgb(var(--color-line-soft)); border-radius: var(--radius); background: rgb(var(--color-surface)); }
+.sg-chip { height: 2.75rem; border-bottom: 1px solid rgb(var(--color-line-soft)); }
+.sg-meta { padding: 0.4rem 0.55rem; font-size: 0.72rem; line-height: 1.3; }
+.sg-meta b { display: block; font-size: 0.76rem; font-weight: 600; overflow-wrap: anywhere; }
+.sg-meta span { font-family: var(--font-mono); color: rgb(var(--color-subtle)); overflow-wrap: anywhere; }
+.sg-type { display: grid; gap: var(--space-3); }
+.sg-type > div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+@media (max-width: 480px) { .sg-type > div { grid-template-columns: 1fr; gap: 0.1rem; } }
+.sg-modal-stage { margin-top: var(--space-3); padding: var(--space-6) var(--space-4); display: grid; place-items: center; border-radius: var(--radius); background: rgb(var(--color-ink) / 0.35); }
+.sg-ref { display: grid; gap: 0.15rem; font-size: 0.82rem; }
+.sg-ref code { color: rgb(var(--color-ink)); }
+pre {
+  margin: var(--space-3) 0 0; padding: var(--space-3) var(--space-4); overflow-x: auto;
+  background: rgb(var(--color-surface-soft)); border: 1px solid rgb(var(--color-line-soft)); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.55;
+}
+</style>
+</head>
+<body>
+
+<header class="ui-topbar">
+  <div class="ui-topbar-inner">
+    <a class="ui-brand" href="#"><span class="ui-brand-dot"></span><span data-app-name>ABPerformance</span></a>
+    <nav class="ui-nav" aria-label="Hauptnavigation">
+      <a href="#" aria-current="page">Übersicht</a>
+      <a href="#">Liste</a>
+      <a href="#">Statistik</a>
+      <a href="#">Einstellungen</a>
+    </nav>
+    <button class="ui-menu-button" type="button" aria-expanded="false" aria-controls="menu-panel">
+      <span class="ui-brand-dot"></span>Übersicht
+    </button>
+    <span class="ui-bar-meta">Sync 28.10. 07:12</span>
+  </div>
+  <nav class="ui-menu-panel" id="menu-panel" aria-label="Hauptnavigation">
+    <a href="#" aria-current="page">Übersicht</a>
+    <a href="#">Liste</a>
+    <a href="#">Statistik</a>
+    <a href="#">Einstellungen</a>
+  </nav>
+</header>
+
+<main class="ui-page">
+
+  <div class="sg-controls">
+    <div><b>Styleguide @overide6/ui</b> – gemeinsamer Look aller overide6-Web-Apps. Die Seite nutzt nur <code>tokens.css</code> und <code>base.css</code>. Unter 1024 px wird die Navigation zum Menü in der Kopfleiste.</div>
+    <div class="ui-row" style="gap: var(--space-2) var(--space-4)">
+      <div class="sg-control">App
+        <span class="ui-seg" role="radiogroup" aria-label="App-Akzent" data-sg="app">
+          <button type="button" role="radio" aria-checked="true" data-value="abperformance">ABPerformance</button>
+          <button type="button" role="radio" aria-checked="false" data-value="kassenbons">Kassenbons</button>
+          <button type="button" role="radio" aria-checked="false" data-value="neu">Neue App</button>
+        </span>
+      </div>
+      <div class="sg-control">Modus
+        <span class="ui-seg" role="radiogroup" aria-label="Farbmodus" data-sg="theme">
+          <button type="button" role="radio" aria-checked="true" data-value="auto">System</button>
+          <button type="button" role="radio" aria-checked="false" data-value="light">Hell</button>
+          <button type="button" role="radio" aria-checked="false" data-value="dark">Dunkel</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page header + KPI strip -->
+  <section class="ui-panel">
+    <div class="ui-head">
+      <div>
+        <div class="ui-kicker">Oktober 2026</div>
+        <h1 style="margin-top: 0.3rem">Seitenkopf</h1>
+        <p class="ui-sub" style="margin-top: 0.35rem">Kicker, Titel, eine Zeile Kontext. Aktionen rechts, auf dem Handy darunter.</p>
+      </div>
+      <div class="ui-row">
+        <button class="ui-btn" type="button">Exportieren</button>
+        <button class="ui-btn ui-btn-primary" type="button">Neu anlegen</button>
+      </div>
+    </div>
+    <div class="ui-kpis">
+      <div class="ui-kpi"><div class="ui-kicker">Ausgaben</div><div class="ui-kpi-value">412,80<small>€</small></div><div class="ui-kpi-note"><span class="ui-down">▲ 8 %</span> zum Vormonat</div></div>
+      <div class="ui-kpi"><div class="ui-kicker">Belege</div><div class="ui-kpi-value">23</div><div class="ui-kpi-note">3 ungeprüft</div></div>
+      <div class="ui-kpi"><div class="ui-kicker">Umfang</div><div class="ui-kpi-value">38,5<small>h</small></div><div class="ui-kpi-note"><span class="ui-up">▲ 4 %</span> über Soll</div></div>
+      <div class="ui-kpi"><div class="ui-kicker">Status</div><div class="ui-kpi-value" style="font-size: 1rem; line-height: 1.35">Im Plan</div><div class="ui-kpi-note"><span class="ui-tag ui-tag-ok">ok</span></div></div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="ui-panel">
+    <div class="sg-title"><div class="ui-kicker">Grundsätze</div><h2>Was alle Apps gemeinsam haben</h2></div>
+    <ul class="sg-rules">
+      <li>Kühle, neutrale Flächen; Haarlinien statt Schatten und verschachtelter Kacheln. Schatten nur für Dialoge.</li>
+      <li>Systemschrift, Zahlen immer mit fester Breite, Beträge und Werte rechtsbündig.</li>
+      <li>Kleine Großbuchstaben-Kicker über Titeln, Kennzahlen und Tabellenköpfen.</li>
+      <li>Farbe sparsam: der App-Akzent für Aktion und „jetzt“, Status-Farben nur für Status, eine Datenfarbe für Diagramme.</li>
+      <li>„Jetzt“ (heute, aktuelle Woche, aktueller Monat) immer mit Akzentbalken links und weichem Verlauf (<code>is-now</code>).</li>
+      <li>Dunkle Kopfleiste in beiden Modi; Hell/Dunkel folgt dem System.</li>
+      <li>Handy zuerst: nie seitlich scrollen (342 px, große Systemschrift), Touch-Ziele mindestens 44 px.</li>
+    </ul>
+  </section>
+
+  <!-- Colours -->
+  <section class="ui-panel">
+    <div class="sg-title"><div class="ui-kicker">Farben</div><h2>Tokens</h2><p class="ui-sub">Werte werden live aus dem aktuellen Modus gelesen. Nur der Akzent ist pro App verschieden.</p></div>
+    <div class="ui-kicker sg-group">Akzent (pro App)</div>
+    <div class="sg-swatches" data-swatches="accent"></div>
+    <div class="ui-kicker sg-group">Flächen und Linien</div>
+    <div class="sg-swatches" data-swatches="surface"></div>
+    <div class="ui-kicker sg-group">Text</div>
+    <div class="sg-swatches" data-swatches="text"></div>
+    <div class="ui-kicker sg-group">Status</div>
+    <div class="sg-swatches" data-swatches="status"></div>
+    <div class="ui-kicker sg-group">Daten und Kopfleiste</div>
+    <div class="sg-swatches" data-swatches="data"></div>
+  </section>
+
+  <div class="ui-grid-2">
+    <!-- Typography -->
+    <section class="ui-panel">
+      <div class="sg-title"><div class="ui-kicker">Typografie</div><h2>Schriftgrößen</h2></div>
+      <div class="sg-type">
+        <div><span class="ui-kicker">h1</span><h1>Saison 2026</h1></div>
+        <div><span class="ui-kicker">h2</span><h2>Diese Woche</h2></div>
+        <div><span class="ui-kicker">h3</span><h3>Einkauf SPAR</h3></div>
+        <div><span class="ui-kicker">Text</span><span>Fließtext 15 px, Zeilenhöhe 1,45.</span></div>
+        <div><span class="ui-kicker">ui-sub</span><span class="ui-sub">Nebeninformation und Kontext</span></div>
+        <div><span class="ui-kicker">ui-kicker</span><span class="ui-kicker">Kennzahl</span></div>
+        <div><span class="ui-kicker">ui-kpi-value</span><span class="ui-kpi-value" style="margin: 0">1.234,56 €</span></div>
+      </div>
+    </section>
+
+    <!-- Buttons, tags, callouts -->
+    <section class="ui-panel">
+      <div class="sg-title"><div class="ui-kicker">Bedienelemente</div><h2>Buttons und Status</h2></div>
+      <div class="ui-stack">
+        <div class="ui-row">
+          <button class="ui-btn ui-btn-primary" type="button">Speichern</button>
+          <button class="ui-btn" type="button">Abbrechen</button>
+          <button class="ui-btn ui-btn-ghost" type="button">Mehr</button>
+          <button class="ui-btn ui-btn-danger" type="button">Löschen</button>
+          <button class="ui-btn" type="button" disabled>Gesperrt</button>
+        </div>
+        <span class="ui-seg" role="radiogroup" aria-label="Zeitraum" data-sg="demo">
+          <button type="button" role="radio" aria-checked="false">Woche</button>
+          <button type="button" role="radio" aria-checked="true">Monat</button>
+          <button type="button" role="radio" aria-checked="false">Jahr</button>
+        </span>
+        <div class="ui-row">
+          <span class="ui-tag">Neutral</span>
+          <span class="ui-tag ui-tag-accent">Neu</span>
+          <span class="ui-tag ui-tag-ok">Geprüft</span>
+          <span class="ui-tag ui-tag-warn">Offen</span>
+          <span class="ui-tag ui-tag-bad">Fehler</span>
+        </div>
+        <div class="ui-callout ui-callout-info"><b>Hinweis:</b> 3 Belege warten auf Prüfung.</div>
+        <div class="ui-callout ui-callout-ok"><b>Gespeichert.</b> Die Buchung ist angelegt.</div>
+        <div class="ui-callout ui-callout-warn"><b>Summe weicht ab:</b> 0,40 € Differenz zum Belegbetrag.</div>
+        <div class="ui-callout ui-callout-bad"><b>Fehler:</b> Die Datei konnte nicht gelesen werden.</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Forms -->
+  <section class="ui-panel">
+    <div class="sg-title"><div class="ui-kicker">Formulare</div><h2>Eingaben</h2><p class="ui-sub">Beschriftung oben, Hinweis darunter. Felder brechen auf dem Handy einspaltig um.</p></div>
+    <form class="ui-form" onsubmit="return false">
+      <label class="ui-field">Datum<input class="ui-input" type="date" value="2026-10-28"></label>
+      <label class="ui-field">Geschäft<select class="ui-input"><option>SPAR</option><option>HOFER</option><option>BILLA</option></select></label>
+      <label class="ui-field">Betrag<input class="ui-input" inputmode="decimal" value="12,4x" aria-invalid="true" aria-describedby="amount-error"><span class="ui-hint ui-hint-bad" id="amount-error">Bitte einen Betrag wie 12,40 eingeben.</span></label>
+      <label class="ui-field">Notiz<input class="ui-input" placeholder="optional"><span class="ui-hint">Erscheint in der Liste.</span></label>
+      <label class="ui-check"><input type="checkbox" checked> Als geprüft markieren</label>
+    </form>
+  </section>
+
+  <div class="ui-grid-2">
+    <!-- Table -->
+    <section class="ui-panel">
+      <div class="ui-head"><div><div class="ui-kicker">Tabelle</div><h2>Monate</h2></div><span class="ui-tag ui-tag-accent">aktuell: Okt.</span></div>
+      <div class="ui-table-wrap">
+        <table class="ui-table">
+          <thead><tr><th>Monat</th><th class="ui-hide-sm">Belege</th><th class="ui-num">Soll</th><th class="ui-num">Ist</th></tr></thead>
+          <tbody>
+            <tr><td>Juli</td><td class="ui-hide-sm">21</td><td class="ui-num">450,00</td><td class="ui-num">431,20</td></tr>
+            <tr><td>August</td><td class="ui-hide-sm">26</td><td class="ui-num">450,00</td><td class="ui-num">498,75</td></tr>
+            <tr><td>September</td><td class="ui-hide-sm">19</td><td class="ui-num">450,00</td><td class="ui-num">402,10</td></tr>
+            <tr class="is-now"><td>Oktober</td><td class="ui-hide-sm">23</td><td class="ui-num">450,00</td><td class="ui-num"><b>412,80</b></td></tr>
+            <tr class="is-muted"><td>November</td><td class="ui-hide-sm">–</td><td class="ui-num">450,00</td><td class="ui-num">–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chart -->
+    <section class="ui-panel">
+      <div class="ui-kicker">Diagramm</div><h2>Ausgaben nach Kategorie</h2>
+      <div class="ui-bars" role="list">
+        <div class="ui-bar-row" role="listitem"><span class="ui-bar-label">Lebensmittel</span><span class="ui-bar-track"><span class="ui-bar-fill" style="width: 82%"></span><span class="ui-bar-target" style="left: 75%"></span></span><span class="ui-num">246,30 €</span></div>
+        <div class="ui-bar-row" role="listitem"><span class="ui-bar-label">Getränke</span><span class="ui-bar-track"><span class="ui-bar-fill" style="width: 31%"></span><span class="ui-bar-target" style="left: 40%"></span></span><span class="ui-num">62,10 €</span></div>
+        <div class="ui-bar-row" role="listitem"><span class="ui-bar-label">Drogerie</span><span class="ui-bar-track"><span class="ui-bar-fill" style="width: 24%"></span><span class="ui-bar-target" style="left: 20%"></span></span><span class="ui-num">48,90 €</span></div>
+        <div class="ui-bar-row" role="listitem"><span class="ui-bar-label">Haushalt</span><span class="ui-bar-track"><span class="ui-bar-fill" style="width: 18%"></span><span class="ui-bar-target" style="left: 25%"></span></span><span class="ui-num">36,40 €</span></div>
+        <div class="ui-bar-row" role="listitem"><span class="ui-bar-label">Sonstiges</span><span class="ui-bar-track"><span class="ui-bar-fill" style="width: 9%"></span><span class="ui-bar-target" style="left: 10%"></span></span><span class="ui-num">19,10 €</span></div>
+      </div>
+      <div class="ui-legend"><span><span class="ui-legend-mark"></span>Ist</span><span><span class="ui-legend-mark is-target"></span>Budget</span></div>
+      <p class="ui-sub" style="margin-top: 0.6rem">Handgeschriebenes HTML/CSS, keine Diagramm-Bibliothek. Datenfarben sind bewusst unabhängig vom App-Akzent.</p>
+    </section>
+  </div>
+
+  <div class="ui-grid-2">
+    <!-- List + empty -->
+    <section class="ui-panel">
+      <div class="ui-kicker">Liste</div><h2>Diese Woche</h2>
+      <div class="ui-list">
+        <div class="ui-item"><div><div class="ui-item-title">Mo · Lockerer Lauf</div><div class="ui-item-meta">45 min · Zone 2</div></div><span class="ui-tag ui-tag-ok">erledigt</span></div>
+        <div class="ui-item is-now"><div><div class="ui-item-title">Di · Einkauf HOFER</div><div class="ui-item-meta">heute · 14 Positionen</div></div><span class="ui-num">38,20 €</span></div>
+        <div class="ui-item"><div><div class="ui-item-title">Mi · Krafttraining</div><div class="ui-item-meta">60 min</div></div><span class="ui-tag">geplant</span></div>
+      </div>
+      <div class="ui-empty" style="margin-top: var(--space-4)"><span class="ui-empty-title">Noch keine Einträge</span>Lade einen Beleg hoch oder lege eine Ausgabe an.</div>
+    </section>
+
+    <!-- Modal (shown in place; in an app it sits in .ui-modal-backdrop) -->
+    <section class="ui-panel">
+      <div class="ui-kicker">Dialog</div><h2>Bestätigung</h2>
+      <div class="sg-modal-stage">
+        <div class="ui-modal" role="dialog" aria-modal="false" aria-labelledby="modal-title">
+          <div class="ui-kicker">Beleg</div>
+          <h3 id="modal-title">Beleg löschen?</h3>
+          <p class="ui-sub">Der Beleg vom 24.10. (SPAR, 38,20 €) wird endgültig entfernt.</p>
+          <div class="ui-modal-actions"><button class="ui-btn" type="button">Abbrechen</button><button class="ui-btn ui-btn-danger" type="button">Löschen</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Adoption -->
+  <section class="ui-panel">
+    <div class="sg-title"><div class="ui-kicker">Einbinden</div><h2>So nutzt eine App das Paket</h2><p class="ui-sub">Details im README des Pakets.</p></div>
+<pre>/* src/index.css */
+@import "@overide6/ui/tokens.css";
+@import "@overide6/ui/base.css";
+
+:root {
+  --app-accent-light: 13 118 108;  /* Kassenbons: Petrol */
+  --app-accent-dark: 82 200 182;
+}</pre>
+<pre>// tailwind.config.js (nur Apps mit Tailwind)
+import overide6 from "@overide6/ui/tailwind-preset";
+
+export default {
+  presets: [overide6],
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+};
+// → bg-surface, border-line, text-muted, bg-accent, bg-accent-soft, text-ink/70 …</pre>
+  </section>
+
+  <!-- Class reference -->
+  <section class="ui-panel">
+    <div class="sg-title"><div class="ui-kicker">Referenz</div><h2>Klassen</h2></div>
+    <div class="ui-form">
+      <div class="sg-ref"><span class="ui-kicker">Gerüst</span><code>ui-topbar · ui-topbar-inner · ui-brand · ui-brand-dot · ui-nav · ui-menu-button · ui-menu-panel(.is-open) · ui-bar-meta · ui-page · ui-grid-2 · ui-head · ui-row · ui-stack</code></div>
+      <div class="sg-ref"><span class="ui-kicker">Flächen und Text</span><code>ui-panel · ui-panel-soft · ui-kicker · ui-sub · is-now</code></div>
+      <div class="sg-ref"><span class="ui-kicker">Bedienung</span><code>ui-btn(-primary|-ghost|-danger) · ui-seg · ui-tag(-accent|-ok|-warn|-bad) · ui-callout(-info|-ok|-warn|-bad)</code></div>
+      <div class="sg-ref"><span class="ui-kicker">Formulare</span><code>ui-form · ui-field · ui-input[aria-invalid] · ui-hint(-bad) · ui-check</code></div>
+      <div class="sg-ref"><span class="ui-kicker">Daten</span><code>ui-kpis · ui-kpi · ui-kpi-value · ui-kpi-note · ui-up · ui-down · ui-table-wrap · ui-table · ui-num · ui-hide-sm · tr.is-now · tr.is-muted</code></div>
+      <div class="sg-ref"><span class="ui-kicker">Diagramme, Listen, Dialog</span><code>ui-bars · ui-bar-row · ui-bar-label · ui-bar-track · ui-bar-fill · ui-bar-target · ui-legend · ui-legend-mark(.is-target) · ui-list · ui-item(.is-now) · ui-item-title · ui-item-meta · ui-empty · ui-empty-title · ui-modal-backdrop · ui-modal · ui-modal-actions</code></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const root = document.documentElement;
+  const appNames = { abperformance: "ABPerformance", kassenbons: "Kassenbons", neu: "Neue App" };
+
+  const swatchGroups = {
+    accent: [["--color-accent", "Akzent"], ["--accent-soft", "Akzent weich", true], ["--accent-line", "Akzent Linie", true], ["--color-on-accent", "Text auf Akzent"]],
+    surface: [["--color-canvas", "Hintergrund"], ["--color-surface", "Fläche"], ["--color-surface-soft", "Fläche weich"], ["--color-surface-strong", "Fläche kräftig"], ["--color-line-soft", "Linie"], ["--color-line-strong", "Linie kräftig"]],
+    text: [["--color-ink", "Text"], ["--color-muted", "Text gedämpft"], ["--color-subtle", "Text leise"]],
+    status: [["--color-success", "Erfolg"], ["--success-soft", "Erfolg weich", true], ["--color-warning", "Warnung"], ["--warning-soft", "Warnung weich", true], ["--color-danger", "Fehler"], ["--danger-soft", "Fehler weich", true]],
+    data: [["--color-chart", "Daten"], ["--color-chart-2", "Daten Vergleich"], ["--color-chart-grid", "Raster"], ["--color-bar", "Kopfleiste"], ["--color-bar-ink", "Kopfleiste Text"], ["--bar-accent", "Kopfleiste aktiv", true]],
+  };
+
+  function toHex(color) {
+    const parts = color.match(/\d+(\.\d+)?/g);
+    if (!parts) return color;
+    return "#" + parts.slice(0, 3).map((n) => Math.round(+n).toString(16).padStart(2, "0")).join("").toUpperCase();
+  }
+
+  function renderSwatches() {
+    for (const [group, tokens] of Object.entries(swatchGroups)) {
+      const host = document.querySelector(`[data-swatches="${group}"]`);
+      host.replaceChildren(...tokens.map(([token, label, isFull]) => {
+        const el = document.createElement("div");
+        el.className = "sg-swatch";
+        const value = isFull ? `var(${token})` : `rgb(var(${token}))`;
+        el.innerHTML = `<div class="sg-chip" style="background:${value}"></div><div class="sg-meta"><b>${label}</b><span>${token}</span><br><span data-hex></span></div>`;
+        return el;
+      }));
+    }
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".sg-swatch").forEach((el) => {
+        el.querySelector("[data-hex]").textContent = toHex(getComputedStyle(el.querySelector(".sg-chip")).backgroundColor);
+      });
+    });
+  }
+
+  document.querySelectorAll(".ui-seg").forEach((seg) => {
+    seg.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      seg.querySelectorAll("button").forEach((b) => b.setAttribute("aria-checked", String(b === button)));
+      const value = button.dataset.value;
+      if (seg.dataset.sg === "app") {
+        root.dataset.app = value;
+        document.querySelector("[data-app-name]").textContent = appNames[value];
+      } else if (seg.dataset.sg === "theme") {
+        if (value === "auto") delete root.dataset.theme;
+        else root.dataset.theme = value;
+      } else {
+        return;
+      }
+      renderSwatches();
+    });
+  });
+
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderSwatches);
+
+  const menuButton = document.querySelector(".ui-menu-button");
+  const menuPanel = document.getElementById("menu-panel");
+  menuButton.addEventListener("click", () => {
+    const open = menuButton.getAttribute("aria-expanded") !== "true";
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuPanel.classList.toggle("is-open", open);
+  });
+
+  renderSwatches();
+</script>
+</body>
+</html>
