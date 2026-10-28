@@ -109,8 +109,12 @@ FROM node:22-alpine AS build
 RUN apk add --no-cache git openssh-client
 WORKDIR /app
 COPY package.json package-lock.json ./
+# GitHub secrets lose the key's final newline, which ssh requires; awk restores
+# it in a tmpfs copy that never reaches a layer.
 RUN --mount=type=secret,id=ui_deploy_key,required=true \
-    GIT_SSH_COMMAND="ssh -i /run/secrets/ui_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
+    --mount=type=tmpfs,target=/run/ui-key \
+    awk 1 /run/secrets/ui_deploy_key > /run/ui-key/id && chmod 600 /run/ui-key/id && \
+    GIT_SSH_COMMAND="ssh -i /run/ui-key/id -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new" \
     npm ci
 ```
 
