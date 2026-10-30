@@ -23,15 +23,15 @@ The look is based on ABPerformance:
 
 ## Using it in an app
 
-The repository is private. Install a tagged release over SSH:
+Install a tagged release from GitHub:
 
 ```json
 "dependencies": {
-  "@overide6/ui": "git+ssh://git@github.com/overide6/ui.git#v0.1.0"
+  "@overide6/ui": "github:overide6/ui#v0.1.0"
 }
 ```
 
-Locally your own SSH key is used. Docker builds and GitHub Actions use the read-only deploy key as a build secret. [ADR 0001, section 7](docs/adr/0001-shared-ui-package.md#7-builds-read-the-repository-with-a-read-only-deploy-key) has the Dockerfile, compose and workflow snippets.
+The repository is public, so `npm install` and `npm ci` need no SSH key or other credentials, locally, in Docker builds and in GitHub Actions.
 
 Import the CSS and set the app's accent:
 
