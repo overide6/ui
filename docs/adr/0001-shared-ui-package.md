@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted · 2026-10-28
+Accepted · 2026-10-28 · Section 7 superseded on 2026-10-30: the repository is public
 
 ## Context
 
@@ -60,20 +60,24 @@ Kassenbons moves from green to petrol, because its old green was hard to tell ap
 
 This lets an app adopt the package step by step next to its existing styles.
 
-### 6. Distribution as a versioned Git dependency from a private repository
+### 6. Distribution as a versioned Git dependency from GitHub
 
-- The package lives in the private GitHub repository `overide6/ui`.
-- Apps depend on a release tag over SSH and import the package from `node_modules`:
+- The package lives in the GitHub repository `overide6/ui`. It was private until 2026-10-30 and is public since then.
+- Apps depend on a release tag and import the package from `node_modules`:
 
   ```json
-  "@overide6/ui": "git+ssh://git@github.com/overide6/ui.git#v0.1.0"
+  "@overide6/ui": "github:overide6/ui#v0.1.0"
   ```
+
+  `npm ci` fetches a public GitHub dependency as an HTTPS tarball, without git, SSH or credentials, even when the lockfile records `git+ssh://` (checked in a bare `node:26-alpine` and in the CI of overide6/invoice-process).
 
 - Versions follow SemVer. Renaming or removing a token or class is a major change.
 
 There is no npm registry and no copying of files into each app.
 
 ### 7. Builds read the repository with a read-only deploy key
+
+> **Superseded on 2026-10-30.** The repository is public, so builds need no key (section 6). The deploy key and the `OVERIDE6_UI_DEPLOY_KEY` secrets are deleted, and Kassenbons dropped the build secret (overide6/invoice-process#13). The rest of this section is kept as the record of the earlier setup.
 
 On the Mac, `npm install` uses the owner's own SSH key. Docker builds and GitHub Actions in the app repositories have no access to a private repository, so they use one shared, **read-only deploy key** of `overide6/ui`:
 
@@ -160,12 +164,12 @@ The secret is a build-time secret only. The running containers never need it, be
 - The apps keep their own build and only import two CSS files (plus the preset where Tailwind is used). Their own stylesheets shrink to layout and app-specific parts.
 - ABPerformance's token names (`skyline`, `haze`, `signal`, `pulse`, …) are replaced by the shared names (`accent`, `subtle`, `success`, `danger`, …) during its migration. ABPerformance gains a dark mode.
 - Kassenbons' colour variables (`--bg`, `--surface`, `--accent`, …) map onto the shared tokens during its migration; its accent changes to petrol.
-- An app's frontend build needs `git`, `openssh-client` and the deploy key during `npm ci` (section 7). Every CI workflow and Dockerfile that installs frontend dependencies must be adjusted once.
+- An app's frontend build needs nothing beyond `npm ci`. Until 2026-10-30 it also needed `git`, `openssh-client` and the deploy key (section 7).
 - New apps start with the package from day one.
 
 ## Planned work
 
-1. Create the deploy key and store it in the password manager. It is added to an app repository's secrets when that app migrates.
+1. ~~Create the deploy key and store it in the password manager.~~ Obsolete since the repository is public.
 2. Migrate Kassenbons. It is plain CSS and already has dark mode.
 3. Migrate ABPerformance. This means the Tailwind preset, renaming the colour names and adding dark mode.
 4. Add the package to the template for new apps.
